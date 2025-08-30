@@ -20,7 +20,7 @@ def guessImg(numGuess, frGuess):
 
     # Creo la figura per il plot interattivo
     plt.ion()
-    fig, axs = plt.subplots(1, 2, figsize=(8,4))
+    fig, axs = plt.subplots(1, 2, figsize=(12,4))
     axs[0].axis('off')
     fig.show()
 
@@ -45,7 +45,7 @@ def guessImg(numGuess, frGuess):
             fette, texts = axs[1].pie(pred[0], startangle=90)                   
             axs[1].legend(fette, pieLab,                                        
                           title="Emozioni",                                     
-                          loc="center left",
+                          loc="center",
                           bbox_to_anchor=(1, 0, 0.5, 1))
             axs[1].set_title("Predizione: " + cls[np.argmax(pred)])
             fig.canvas.draw()
