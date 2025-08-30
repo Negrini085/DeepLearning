@@ -2,6 +2,7 @@ import time
 import cv2 as cv
 import numpy as np
 import multiprocessing as mp
+import matplotlib.pyplot as plt
 
 from Appo.visualInput import visIn
 from tensorflow.keras.models import load_model
@@ -16,19 +17,39 @@ def guessImg(numGuess, frGuess):
     model = load_model("../Modelli/dropoutTry.keras")  
     print("Modello correttamente caricato", flush = 'True')
     appo = 0
+
+    # Creo la figura per il plot interattivo
+    plt.ion()
+    fig, axs = plt.subplots(1, 2, figsize=(8,4))
+    axs[0].axis('off')
+    fig.show()
+
     while True:
         if numGuess.value != appo:
-
+            # Leggo dalle variabili globali condivise
             appo = numGuess.value
             img = np.array(frGuess[:]).reshape(48, 48)
-            # Provo a fare la guess. Dato che è necessario del tempo tecnico per far sì che la 
-            # rete effettui la predizione, decidiamo di provarci ogni 0.5 secondi, in modo da non
-            # rallentare eccessivamente la visualizzazione
+           
+            # Provo a effettuare la predizione
             cls = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
             pred = model.predict(np.expand_dims(img, axis=0))
-            print("Predizione: " + cls[np.argmax(pred)], flush = 'True')
 
-
+            # Aggiorno il primo plot
+            axs[0].cla()
+            axs[0].imshow(img)
+            axs[0].set_title("Immagine da videocamera")
+            
+            # Aggiorno il secondo plot
+            axs[1].cla()
+            pieLab = [f"{cls[i]} ({pred[0][i]*100:.1f}%)" for i in range(len(cls))]
+            fette, texts = axs[1].pie(pred[0], startangle=90)                   
+            axs[1].legend(fette, pieLab,                                        
+                          title="Emozioni",                                     
+                          loc="center left",
+                          bbox_to_anchor=(1, 0, 0.5, 1))
+            axs[1].set_title("Predizione: " + cls[np.argmax(pred)])
+            fig.canvas.draw()
+            plt.pause(0.001)
 
 
 
