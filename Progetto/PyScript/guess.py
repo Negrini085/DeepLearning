@@ -3,6 +3,7 @@ import cv2 as cv
 import numpy as np
 import multiprocessing as mp
 
+from Appo.visualInput import visIn
 from tensorflow.keras.models import load_model
 from multiprocessing import Process, Value, Array
 
@@ -48,10 +49,7 @@ if __name__ == "__main__":
         print("Cannot open camera")
         exit()
 
-    if True:
-        durR = input("Durata della ripresa: ")
-        numG = input("Numero di guess: ")
-
+    durR, numG = visIn()
     start = time.perf_counter()
     lastPred = start
     # Continuo a leggere le immagini e sulle stesse effettuo le dovute analisi, come per 
