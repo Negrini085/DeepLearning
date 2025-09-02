@@ -1,6 +1,6 @@
 #!/bin/bash
 
-modN=("firstTry.keras" "dropoutTry.keras" "alldropTry.keras")      	       		 # Nome del file di input modello
+modN=("firstTry.keras" "dropoutTry.keras" "alldropTry.keras")      	             # Nome del file di input modello
 modG=("firstTry.npy" "dropoutTry.npy" "alldropTry.npy")      	       		     # Nome del file di output previsioni
 
 #-----------------------------------------------------------------------#

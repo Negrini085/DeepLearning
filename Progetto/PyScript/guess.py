@@ -1,5 +1,7 @@
+#---------------------------------------------------------------#
+#       Codice per determinare le guess di un dato modello      #
+#---------------------------------------------------------------#
 import sys
-
 
 # Controllo quanti argomenti sono presenti, poichè in caso ne siano
 # stati forniti troppi pochi, non continuo con l'esecuzione del codice
