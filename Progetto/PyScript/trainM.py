@@ -90,5 +90,5 @@ if __name__ == "__main__":
     valAcc = hist.history['val_accuracy']
 
     data = np.column_stack((loss, valLoss, acc, valAcc))
-    np.savetxt("training/emo_v1.dat", data, delimiter="  ", fmt="%.2f")
-    model.save("emo_v1.keras")
+    np.savetxt("../Modelli/training/emo_v1.dat", data, delimiter="  ", fmt="%.2f")
+    model.save("../Modelli/emo_v1.keras")
