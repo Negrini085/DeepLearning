@@ -1,7 +1,7 @@
 #!/bin/bash
 
-modN=("firstTry.keras" "dropoutTry.keras" "alldropTry.keras")      	             # Nome del file di input modello
-modG=("firstTry.npy" "dropoutTry.npy" "alldropTry.npy")      	       		     # Nome del file di output previsioni
+modN=("firstTry.keras")      	             # Nome del file di input modello
+modG=("firstTry.npy")      	             # Nome del file di output previsioni
 
 #-----------------------------------------------------------------------#
 #       Ciclo per modificare parametri esecuzione script guess.py       #

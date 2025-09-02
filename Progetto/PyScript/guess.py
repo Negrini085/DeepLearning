@@ -32,8 +32,7 @@ if len(sys.argv) == 3:
 
         # Predizioni del modello
         pred = model.predict(valDat)
-        yPr = np.argmax(pred, axis=1)
-        np.save(title, yPr)
+        np.save(title, pred)
 
 
     if __name__ == "__main__":

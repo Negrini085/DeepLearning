@@ -20,7 +20,7 @@ if len(sys.argv) == 3:
 
         # Creazione matrice di confusione
         yTr = np.load("../Modelli/guess/trueG.npy")
-        yPr = np.load(modN)
+        yPr = np.argmax(np.load(modN), axis=1)
 
         cm = confusion_matrix(yTr, yPr, normalize = 'true')
         labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']

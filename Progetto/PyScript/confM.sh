@@ -1,7 +1,7 @@
 #!/bin/bash
 
-modG=("firstTry.npy" "dropoutTry.npy" "alldropTry.npy")      	       		# Nome del file di output previsioni
-titM=("firstTry" "dropoutTry" "alldropTry")      	       		        # Nome del file di output previsioni
+modG=("firstTry.npy")      	       		# Nome del file di output previsioni
+titM=("firstTry")      	       		        # Nome del file di output previsioni
 
 #-----------------------------------------------------------------------#
 #       Ciclo per modificare parametri esecuzione script confM.py       #
