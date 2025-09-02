@@ -14,7 +14,7 @@ def guessImg(numGuess, frGuess):
     
     # Come prima cosa importo il modello, perchè mi servirà per 
     # fare le guess necessarie
-    model = load_model("../Modelli/dropoutTry.keras")  
+    model = load_model("../Modelli/firstTry.keras")  
     print("Modello correttamente caricato", flush = 'True')
     appo = 0
 
