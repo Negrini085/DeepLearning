@@ -54,7 +54,6 @@ if __name__ == "__main__":
 
     # Loading delle immagini
     trDir = "../Dataset/train"  
-    valDir = "../Dataset/test"  
     datagen = ImageDataGenerator(rescale=1./255, validation_split=0.2)
 
     # Dataset di training (80%)
