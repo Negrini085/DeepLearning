@@ -41,7 +41,7 @@ if len(sys.argv) == 3:
         plt.ylabel('Vera label')
         plt.xlabel('Guess label')
         plt.tight_layout()
-        plt.savefig("../Modelli/immagini/confM_" + titM + ".png")
+        plt.savefig("../Immagini/Performance/confM_" + titM + ".png")
 
 
     if __name__ == "__main__":
