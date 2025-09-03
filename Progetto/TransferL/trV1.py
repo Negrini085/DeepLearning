@@ -11,10 +11,12 @@
 #----------------------------------------------------#
 
 import os
+import pandas as pd
 import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from keras import Sequential, Model
+from keras.callbacks import EarlyStopping
 from keras.applications import MobileNetV3Large
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from keras.layers import RandomFlip, RandomRotation, RandomTranslation, RandomZoom, RandomContrast, GlobalAveragePooling2D, Dropout, Dense
@@ -118,9 +120,15 @@ if __name__ == "__main__":
     trDat = trDat.prefetch(buffer_size=AUTOTUNE)
     valDat = valDat.prefetch(buffer_size=AUTOTUNE)
 
-    initial_epochs = 10
-    history = model.fit(
-        trDat,
-        validation_data=valDat,
-        epochs=initial_epochs,
-    )
+    earlyS = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+    histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS])
+
+
+    #--------------------------------------------#
+    #      Salvataggio modello e history         #
+    #--------------------------------------------#
+    histoD = histo.history 
+    df = pd.DataFrame(histoD)
+    df.to_csv("train/V1_histo.csv", index=False)
+
+    model.save("mod/V1.keras")
