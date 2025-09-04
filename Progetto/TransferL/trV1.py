@@ -23,7 +23,7 @@ from keras.layers import RandomFlip, RandomRotation, RandomTranslation, RandomZo
 
 # Variabili globali
 batS = 32
-imS = (96, 96)
+imS = (128, 128)
 nCl = 7
 
 
@@ -66,6 +66,7 @@ if __name__ == "__main__":
     #---------------------------------#
     #       Caricamento dataset       #
     #---------------------------------#
+    print("Inizia la carica del dataset")
     trDat = tf.keras.utils.image_dataset_from_directory(
         "../Dataset/train",
         shuffle = True,
@@ -121,9 +122,9 @@ if __name__ == "__main__":
     trDat = trDat.prefetch(buffer_size=AUTOTUNE)
     valDat = valDat.prefetch(buffer_size=AUTOTUNE)
 
-    earlyS = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
-    reduceLR = ReduceLROnPlateau(monitor='val_loss', factor = 0.5, patiance=3, verbose=1, min_lr=1e-6)
-    histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS])
+    earlyS = EarlyStopping(monitor='val_loss', patience=8, restore_best_weights=True)
+    reduceLR = ReduceLROnPlateau(monitor='val_loss', factor = 0.5, patience=3, verbose=1, min_lr=1e-6)
+    histo = model.fit(trDat, validation_data=valDat, epochs=150, callbacks=[earlyS, reduceLR])
 
 
     #--------------------------------------------#
