@@ -17,8 +17,7 @@ import matplotlib.pyplot as plt
 
 from keras import Sequential, Model
 from keras.callbacks import EarlyStopping
-from keras.applications import MobileNetV3Large
-from tensorflow.keras.preprocessing.image import ImageDataGenerator
+from keras.applications import MobileNetV3Small
 from keras.layers import RandomFlip, RandomRotation, RandomTranslation, RandomZoom, RandomContrast, GlobalAveragePooling2D, Dropout, Dense
 
 
@@ -43,14 +42,16 @@ def dataAug(rRot, rTr, rZm, rC):
     return appo
 
 
-# Funzione per la costruzione del modello basato sulla rete MobileNetV3Large
+# Funzione per la costruzione del modello basato sulla rete MobileNetV3Small
 def buildMod(bMod):
 
     inputs = tf.keras.Input(shape=imS + (3,))
     x =  dataAug(0.1, 0.1, 0.2, 0.1)(inputs, training=True)         # Data augmentation layer
-    x = tf.keras.applications.mobilenet_v3.preprocess_input(x)      # Normalizzazione immagini per MobileNetV3Large
-    x = bMod(x, training=False)                                     # MobileNetV3Large
+    x = tf.keras.applications.mobilenet_v3.preprocess_input(x)      # Normalizzazione immagini per MobileNetV3Small
+    x = bMod(x, training=False)                                     # MobileNetV3Small
     x = GlobalAveragePooling2D()(x)                                 # Alternativo a flattening (tengo solo "forza media del layer")
+    x = Dropout(0.2)(x)
+    x = Dense(128, activation='relu')(x)
     x = Dropout(0.2)(x)
     outputs = Dense(nCl, activation='softmax')(x)
 
@@ -92,11 +93,11 @@ if __name__ == "__main__":
 
 
     #----------------------------------------------------#
-    #       Caricamento modello MobileNetV3Large         #
+    #       Caricamento modello MobileNetV3Small         #
     #----------------------------------------------------#
     # Importo il modello RedNet18 non includendo il layer di classificazione, fissando inoltre 
     # i parametri in modo che non possano essere modificati durante l'allenamento
-    bMod = MobileNetV3Large(input_shape=imS + (3,), weights="imagenet", include_top=False)
+    bMod = MobileNetV3Small(input_shape=imS + (3,), weights="imagenet", include_top=False)
     bMod.trainable = False
 
 
