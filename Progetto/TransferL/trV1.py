@@ -16,8 +16,8 @@ import tensorflow as tf
 import matplotlib.pyplot as plt
 
 from keras import Sequential, Model
-from keras.callbacks import EarlyStopping
 from keras.applications import MobileNetV3Small
+from keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from keras.layers import RandomFlip, RandomRotation, RandomTranslation, RandomZoom, RandomContrast, GlobalAveragePooling2D, Dropout, Dense
 
 
@@ -121,7 +121,8 @@ if __name__ == "__main__":
     trDat = trDat.prefetch(buffer_size=AUTOTUNE)
     valDat = valDat.prefetch(buffer_size=AUTOTUNE)
 
-    earlyS = EarlyStopping(monitor='val_loss', patience=5, restore_best_weights=True)
+    earlyS = EarlyStopping(monitor='val_loss', patience=10, restore_best_weights=True)
+    reduceLR = ReduceLROnPlateau(monitor='val_loss', factor = 0.5, patiance=3, verbose=1, min_lr=1e-6)
     histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS])
 
 
