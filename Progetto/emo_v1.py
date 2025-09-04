@@ -4,55 +4,46 @@ import tensorflow as tf
 
 from tensorflow import keras
 from keras import Sequential
-from tensorflow.keras.models import Model
+from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.layers import Input, Flatten, Dense, MaxPooling2D, Conv2D, Dropout, RandomFlip, RandomRotation, RandomTranslation, RandomZoom, RandomContrast, Rescaling
-
-
-# Funzione per data augmentation
-def dataAug(rRot, rTr, rZm, rC):
-    appo = tf.keras.Sequential([
-        RandomFlip("horizontal"),
-        RandomRotation(rRot),
-        RandomTranslation(rTr, rTr),  
-        RandomZoom(rZm),
-        RandomContrast(rC) 
-    ])
-    return appo
+from tensorflow.keras.layers import Input, Flatten, Dense, MaxPooling2D, Conv2D, Dropout, RandomFlip, RandomRotation, RandomTranslation, RandomZoom, RandomContrast
 
 
 # Funzione per la costruzione del modello
 def buildMod(imW, imH, numcl):
-    inputs = Input(shape=(imW, imH, 1))
-    
-    # Data augmentation
-    x = dataAug(0.1, 0.1, 0.2, 0.1)(inputs)
+
+    # Input e data augmentation
+    model = Sequential()
+    model.add(Input(shape=(imW, imH, 1)))
+    model.add(RandomFlip("horizontal"))
+    model.add(RandomRotation(0.1))
+    model.add(RandomTranslation(0.1, 0.1))  
+    model.add(RandomZoom(0.1))
+    model.add(RandomContrast(0.1)) 
     
     # Primo blocco convoluzionale
-    x = Conv2D(16, 3, activation='relu', padding='same')(x)
-    x = Conv2D(16, 3, activation='relu', padding='same')(x)
-    x = MaxPooling2D(pool_size=(2, 2), padding='same')(x)
-    x = Dropout(0.1)(x)
+    model.add(Conv2D(16, 3, activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+    model.add(Dropout(0.1))
     
     # Secondo blocco convoluzionale
-    x = Conv2D(32, 3, activation='relu', padding='same')(x)
-    x = Conv2D(32, 3, activation='relu', padding='same')(x)
-    x = MaxPooling2D(pool_size=(2, 2), padding='same')(x)
-    x = Dropout(0.2)(x)
+    model.add(Conv2D(32, 3, activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+    model.add(Dropout(0.2))
     
     # Terzo blocco convoluzionale
-    x = Conv2D(64, 3, activation='relu', padding='same')(x)
-    x = Conv2D(64, 3, activation='relu', padding='same')(x)
-    x = MaxPooling2D(pool_size=(3, 3), padding='same')(x)
-    x = Dropout(0.3)(x)
+    model.add(Conv2D(64, 3, activation='relu', padding='same'))
+    model.add(Conv2D(64, 3, activation='relu', padding='same'))
+    model.add(MaxPooling2D(pool_size=(2, 2), padding='same'))
+    model.add(Dropout(0.3))
     
     # Parte di classificazione
-    x = Flatten()(x)
-    x = Dense(128, activation='relu')(x)
-    x = Dropout(0.4)(x)
-    outputs = Dense(numcl, activation='softmax')(x)
-    
-    return Model(inputs=inputs, outputs=outputs)
+    model.add(Flatten())
+    model.add(Dense(128, activation='relu'))
+    model.add(Dropout(0.4))
+    model.add(Dense(numcl, activation='softmax'))
+   
+    return model
 
 
 # Funzione per rescaling immagini
@@ -109,7 +100,7 @@ if __name__ == "__main__":
     #             Allenamento modello             #
     #---------------------------------------------#
     earlyS = EarlyStopping(monitor='val_loss', patience=5)
-    hist = model.fit(trDat, epochs=1, validation_data=valDat, callbacks=[earlyS])
+    hist = model.fit(trDat, epochs=200, validation_data=valDat, callbacks=[earlyS])
 
 
     #---------------------------------------------#
