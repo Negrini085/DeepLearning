@@ -22,7 +22,7 @@ from keras.layers import RandomFlip, RandomRotation, RandomTranslation, RandomZo
 
 
 # Variabili globali
-batS = 32
+batS = 64
 imS = (128, 128)
 nCl = 7
 
@@ -50,9 +50,9 @@ def buildMod(bMod):
     x = tf.keras.applications.mobilenet_v3.preprocess_input(x)      # Normalizzazione immagini per MobileNetV3Small
     x = bMod(x, training=False)                                     # MobileNetV3Small
     x = GlobalAveragePooling2D()(x)                                 # Alternativo a flattening (tengo solo "forza media del layer")
-    x = Dropout(0.2)(x)
+    x = Dropout(0.3)(x)
     x = Dense(128, activation='relu')(x)
-    x = Dropout(0.2)(x)
+    x = Dropout(0.3)(x)
     outputs = Dense(nCl, activation='softmax')(x)
 
     return Model(inputs, outputs)
@@ -108,7 +108,7 @@ if __name__ == "__main__":
     #--------------------------------------------#
     model = buildMod(bMod)
     model.compile(
-        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-4),
+        optimizer=tf.keras.optimizers.Adam(learning_rate=1e-3),
         loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False),
         metrics=["accuracy"],
     )
