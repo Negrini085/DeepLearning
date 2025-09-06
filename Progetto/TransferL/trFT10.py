@@ -77,7 +77,7 @@ if __name__ == "__main__":
     bMod.trainable = True
 
     # Mantiengo congelati l'80% dei layer
-    fine_tune_at = int(len(bMod.layers) * 0.8)
+    fine_tune_at = int(len(bMod.layers) * 0.9)
     for layer in bMod.layers[:fine_tune_at]:
         layer.trainable = False
 
@@ -102,6 +102,6 @@ if __name__ == "__main__":
     #--------------------------------------------#
     histoFT = histo.history 
     df = pd.DataFrame(histoFT)
-    df.to_csv("train/FT_histo.csv", index=False)
+    df.to_csv("train/FT10_histo.csv", index=False)
 
-    model.save("mod/FT.keras")
+    model.save("mod/FT10.keras")
