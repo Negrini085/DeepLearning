@@ -110,6 +110,6 @@ if __name__ == "__main__":
     #--------------------------------------------#
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/line2_histo.csv", index=False)
+    df.to_csv("Modelli/training/line2_v1_histo.csv", index=False)
 
-    model.save("Modelli/line2.keras")
+    model.save("Modelli/line2_v1.keras")

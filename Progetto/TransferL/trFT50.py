@@ -35,7 +35,7 @@ if __name__ == "__main__":
     #---------------------------------#
     print("Inizia la carica del dataset")
     trDat = tf.keras.utils.image_dataset_from_directory(
-        "../Dataset/train",
+        "Dataset/train",
         shuffle = True,
         validation_split=0.2,
         subset="training",
@@ -47,7 +47,7 @@ if __name__ == "__main__":
     )
 
     valDat = tf.keras.utils.image_dataset_from_directory(
-        "../Dataset/train",
+        "Dataset/train",
         shuffle = False,
         validation_split=0.2,
         subset="validation",
@@ -70,7 +70,7 @@ if __name__ == "__main__":
     #--------------------------------------------#
     #           Fine-tuning MobileNetV3          #
     #--------------------------------------------#
-    model = tf.keras.models.load_model("mod/V1.keras")
+    model = tf.keras.models.load_model("TransferL/mod/V1.keras")
     print("Modello correttamente caricato!")
 
     bMod = model.layers[2]
@@ -102,6 +102,6 @@ if __name__ == "__main__":
     #--------------------------------------------#
     histoFT = histo.history 
     df = pd.DataFrame(histoFT)
-    df.to_csv("train/FT50_histo.csv", index=False)
+    df.to_csv("TransferL/train/FT50_histo.csv", index=False)
 
-    model.save("mod/FT50.keras")
+    model.save("TransferL/mod/FT50.keras")

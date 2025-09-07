@@ -109,7 +109,7 @@ if __name__ == "__main__":
 
     earlyS = EarlyStopping(monitor="val_loss", patience=8, restore_best_weights=True)
     reduceLR = ReduceLROnPlateau(monitor='val_loss', factor = 0.5, patience=3, verbose=1, min_lr=1e-6)
-    histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS])
+    histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS, reduceLR])
 
 
 
@@ -118,6 +118,6 @@ if __name__ == "__main__":
     #--------------------------------------------#
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/line1_histo.csv", index=False)
+    df.to_csv("Modelli/training/line1_v1_histo.csv", index=False)
 
-    model.save("Modelli/line1.keras")
+    model.save("Modelli/line1_v1.keras")
