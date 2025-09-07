@@ -3,7 +3,7 @@ import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling
+from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling, BatchNormalization, Activation
 
 
 def buildMod(imW, imH, numcl):
@@ -12,19 +12,27 @@ def buildMod(imW, imH, numcl):
     model.add(Rescaling(1/255.))
 
     # Primo blocco convoluzionale
-    model.add(Conv2D(16, 3, padding="same", activation="relu"))
+    model.add(Conv2D(16, 3, padding="same"))
+    model.add(BatchNormalization())
+    model.add(Activation("relu"))
     model.add(MaxPooling2D())
 
     # Secondo blocco convoluzionale
-    model.add(Conv2D(32, 3, padding="same", activation="relu"))
+    model.add(Conv2D(32, 3, padding="same"))
+    model.add(BatchNormalization())
+    model.add(Activation("relu"))
     model.add(MaxPooling2D())
 
     # Terzo blocco convoluzionale
-    model.add(Conv2D(64, 3, padding="same", activation="relu"))
+    model.add(Conv2D(64, 3, padding="same"))
+    model.add(BatchNormalization())
+    model.add(Activation("relu"))
     model.add(MaxPooling2D())
 
     # Quarto blocco convoluzionale
-    model.add(Conv2D(128, 3, padding="same", activation="relu"))
+    model.add(Conv2D(128, 3, padding="same"))
+    model.add(BatchNormalization())
+    model.add(Activation("relu"))
     model.add(MaxPooling2D())
 
     # Parte di classificazione
@@ -88,7 +96,7 @@ if __name__ == "__main__":
     model.compile(optimizer="Adam", loss= "categorical_crossentropy", metrics=["accuracy"])
     model.summary()
 
-    earlyS = EarlyStopping(monitor="val_loss", patience=7, restore_best_weights=True)
+    earlyS = EarlyStopping(monitor="val_loss", patience=5, restore_best_weights=True)
     histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS])
 
     #--------------------------------------------#
@@ -97,6 +105,6 @@ if __name__ == "__main__":
 
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/try2_histo.csv", index=False)
+    df.to_csv("Modelli/training/try3_histo.csv", index=False)
 
-    model.save("Modelli/try2.keras")
+    model.save("Modelli/try3.keras")
