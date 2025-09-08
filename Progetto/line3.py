@@ -72,7 +72,7 @@ if __name__ == "__main__":
     
     valDat = tf.keras.utils.image_dataset_from_directory(
         "Dataset/train",
-        shuffle = False,
+        shuffle = True,
         validation_split = 0.2,
         subset = "validation",
         seed = 123,
