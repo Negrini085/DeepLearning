@@ -1,7 +1,7 @@
 #!/bin/bash
 
-modG=("emo_v1.npy" "emo_v2.npy")      	                # Nome del file di output previsioni
-titM=("emo_v1" "emo_v2")      	       		        # Nome output matrice di confusione
+modG=("try1.npy" "try2.npy" "try3.npy" "try4.npy" "try5.npy")      	                # Nome del file di output previsioni
+titM=("try1" "try2" "try3" "try4" "try5")      	       		                	# Nome output matrice di confusione
 
 #-----------------------------------------------------------------------#
 #       Ciclo per modificare parametri esecuzione script confM.py       #

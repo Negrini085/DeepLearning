@@ -19,7 +19,7 @@ if len(sys.argv) == 3:
 
         # Importo il modello e le immagini sulle quali effettuare le guess
         model = load_model(modN)  
-        datagen = ImageDataGenerator(rescale=1./255)
+        datagen = ImageDataGenerator()
 
         valDat = datagen.flow_from_directory(
             valDir,
@@ -41,7 +41,7 @@ if len(sys.argv) == 3:
         modN = sys.argv[1]
         title = sys.argv[2]
         
-        guessMod("../Modelli/" + modN, "../Dataset/test", "../Modelli/guess/" + title)
+        guessMod("../Modelli/loadable/" + modN, "../Dataset/test", "../Modelli/guess/" + title)
         print("Guess stampate a file!")
         
 else:

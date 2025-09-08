@@ -95,8 +95,7 @@ if __name__ == "__main__":
     #--------------------------------------------#
     model = buildMod(48, 48, 7)
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
-    loss = tf.keras.losses.CategoricalCrossentropy(label_smoothing=0.1)
-    model.compile(optimizer=optimizer, loss= loss, metrics=["accuracy"])
+    model.compile(optimizer=optimizer, loss= "categorical_crossentropy", metrics=["accuracy"])
     model.summary()
 
     earlyS = EarlyStopping(monitor="val_loss", patience=8, restore_best_weights=True)
@@ -110,6 +109,6 @@ if __name__ == "__main__":
     #--------------------------------------------#
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/line2_v1_histo.csv", index=False)
+    df.to_csv("Modelli/training/line2_v2_histo.csv", index=False)
 
-    model.save("Modelli/line2_v1.keras")
+    model.save("Modelli/line2_v2.keras")
