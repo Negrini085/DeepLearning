@@ -10,8 +10,9 @@ if len(sys.argv) == 3:
     import numpy as np
 
     from tensorflow import keras
-    from tensorflow.keras.models import load_model
+    from tensorflow.keras.models import load_model, Model
     from tensorflow.keras.preprocessing.image import ImageDataGenerator
+    from tensorflow.keras.applications.mobilenet_v3 import preprocess_input
 
     # Funzione che effettua le guess per un certo modello e stampa il risultato a file,
     # di modo che non sia necessario ri-eseguire quanto già fatto una volta
@@ -19,8 +20,8 @@ if len(sys.argv) == 3:
 
         # Importo il modello e le immagini sulle quali effettuare le guess
         model = load_model(modN)  
+        
         datagen = ImageDataGenerator()
-
         valDat = datagen.flow_from_directory(
             valDir,
             target_size=(48, 48),
@@ -41,7 +42,7 @@ if len(sys.argv) == 3:
         modN = sys.argv[1]
         title = sys.argv[2]
         
-        guessMod("../Modelli/loadable/" + modN, "../Dataset/test", "../Modelli/guess/" + title)
+        guessMod("../Modelli/" + modN, "../Dataset/test", "../Modelli/guess/" + title)
         print("Guess stampate a file!")
         
 else:

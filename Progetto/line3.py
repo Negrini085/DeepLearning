@@ -1,15 +1,23 @@
+import numpy as np
 import pandas as pd
 import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.callbacks import EarlyStopping
-from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling, BatchNormalization, Activation, GlobalAveragePooling2D
+from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
+from tensorflow.keras.layers import RandomRotation, RandomTranslation, RandomZoom, RandomContrast
+from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling
 
 
 def buildMod(imW, imH, numcl):
     model = tf.keras.models.Sequential()
     model.add(Input(shape=(imW, imH, 1)))
     model.add(Rescaling(1/255.))
+
+    # Data augmentation
+    model.add(RandomRotation(0.15))
+    model.add(RandomTranslation(0.1, 0.1))
+    model.add(RandomZoom(0.1))
+    model.add(RandomContrast(0.1))
 
     # Primo blocco convoluzionale
     model.add(Conv2D(16, 3, padding="same", activation = "relu"))
@@ -64,7 +72,7 @@ if __name__ == "__main__":
     
     valDat = tf.keras.utils.image_dataset_from_directory(
         "Dataset/train",
-        shuffle = True,
+        shuffle = False,
         validation_split = 0.2,
         subset = "validation",
         seed = 123,
@@ -90,18 +98,22 @@ if __name__ == "__main__":
     #              Build & Training              #
     #--------------------------------------------#
     model = buildMod(48, 48, 7)
-    model.compile(optimizer="Adam", loss= "categorical_crossentropy", metrics=["accuracy"])
+    optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
+    model.compile(optimizer=optimizer, loss= "categorical_crossentropy", metrics=["accuracy"])
     model.summary()
 
     earlyS = EarlyStopping(monitor="val_loss", patience=8, restore_best_weights=True)
-    histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS])
+    reduceLR = ReduceLROnPlateau(monitor='val_loss', factor = 0.5, patience=3, verbose=1, min_lr=1e-6)
+    histo = model.fit(trDat, validation_data=valDat, epochs=200, callbacks=[earlyS, reduceLR])
+
+
 
     #--------------------------------------------#
-    # Salvataggio modello e history #
+    #         Salvataggio modello e history      #
     #--------------------------------------------#
 
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/try5_histo.csv", index=False)
+    df.to_csv("Modelli/training/line3_v2_histo.csv", index=False)
 
-    model.save("Modelli/try5.keras")
+    model.save("Modelli/line3_v2.keras")

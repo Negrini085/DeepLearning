@@ -22,6 +22,9 @@ if len(sys.argv) == 3:
         yTr = np.load("../Modelli/guess/trueG.npy")
         yPr = np.argmax(np.load(modN), axis = 1)
 
+        acc = (yPr == yTr).mean()
+        print("Accuracy globale:", acc)
+
         cm = confusion_matrix(yTr, yPr, normalize = 'true')
         labels = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
         title='Confusion matrix: ' + titM

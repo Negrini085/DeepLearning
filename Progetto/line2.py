@@ -4,7 +4,6 @@ import tensorflow as tf
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
-from sklearn.utils.class_weight import compute_class_weight
 from tensorflow.keras.layers import RandomRotation, RandomTranslation, RandomZoom, RandomContrast
 from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling, BatchNormalization, Activation
 
