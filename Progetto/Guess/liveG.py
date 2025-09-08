@@ -14,7 +14,7 @@ def guessImg(numGuess, frGuess):
     
     # Come prima cosa importo il modello, perchè mi servirà per 
     # fare le guess necessarie
-    model = load_model("../Modelli/firstTry.keras")  
+    model = load_model("../TransferL/mod/FT60.keras")  
     print("Modello correttamente caricato", flush = 'True')
     appo = 0
 
@@ -28,11 +28,12 @@ def guessImg(numGuess, frGuess):
         if numGuess.value != appo:
             # Leggo dalle variabili globali condivise
             appo = numGuess.value
-            img = np.array(frGuess[:]).reshape(48, 48)
+            img = np.array(frGuess[:]).reshape(128, 128)
+            img3c = np.stack([img]*3, axis=-1)
            
             # Provo a effettuare la predizione
             cls = ['angry', 'disgust', 'fear', 'happy', 'neutral', 'sad', 'surprise']
-            pred = model.predict(np.expand_dims(img, axis=0))
+            pred = model.predict(np.expand_dims(img3c, axis=0))
 
             # Aggiorno il primo plot
             axs[0].cla()
@@ -58,7 +59,7 @@ if __name__ == "__main__":
 
     # Variabili globali    
     numGuess = Value('i', 0)
-    frGuess = Array('d', np.zeros(48*48))
+    frGuess = Array('d', np.zeros(128*128))
 
     a = Process(target=guessImg, args=(numGuess, frGuess,), daemon=True)
     a.start()
@@ -74,7 +75,7 @@ if __name__ == "__main__":
     start = time.perf_counter()
     lastPred = start
     # Continuo a leggere le immagini e sulle stesse effettuo le dovute analisi, come per 
-    # esempio la riduzione al formato di nostro interesse (48 pixels x 48 pixels)  
+    # esempio la riduzione al formato di nostro interesse (128 pixels x 128 pixels)  
     while time.perf_counter() - start <= durR:
         # Inizio a leggere lo stream frame by frame utilizzando .read() di openCV. Tale funzione 
         # restituisce un bool (True se la lettura dell'immagine è andata a buon fine, False altrimenti)
@@ -89,10 +90,10 @@ if __name__ == "__main__":
         # Di seguito riportiamo l'immagine catturata nel formato richiesto come input dalla 
         # rete neurale. In farticolare con cv.cvtColor la riproponiamo in scala di grigi, 
         # mentre con i due passaggi successivi selezioniamo solamente la regione centrale 
-        # del frame, per poi farne un resize
+        # del frame, per poi farne un resize.
         gray = cv.cvtColor(frame, cv.COLOR_BGR2GRAY)
         gray = gray[80:400, 160:480]
-        gray = cv.resize(gray, (48, 48))
+        gray = cv.resize(gray, (128, 128))
 
         # Mostriamo ora il frame a video. Per far sì che l'immagine sia visualizzata con una dimensione
         # adeguata, definiamo una finestra della quale specifichiamo la dimensione
