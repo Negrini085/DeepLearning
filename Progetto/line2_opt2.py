@@ -9,8 +9,8 @@ from tensorflow.keras.layers import RandomRotation, RandomTranslation, RandomZoo
 from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling, BatchNormalization, Activation
 
 
-from optuna.samplers import RandomSampler
-from optuna.visualization import plot_contour , plot_rank
+from optuna.samplers import TPESampler
+from optuna.trial import FrozenTrial, TrialState
 
 
 #-----------------------------------------------------#
@@ -60,7 +60,7 @@ testDat = tf.keras.utils.image_dataset_from_directory(
 def buildMod(trial):
 
     # Scelgo numero filtri e dropout
-    nFil = trial.suggest_int("filters", 4, 20, step=2)
+    nFil = trial.suggest_int("filters", 12, 20, step=1)
     drR = trial.suggest_float("dropout", 0.1, 0.3)
 
     # Parte di input
@@ -128,7 +128,6 @@ def objective(trial):
 
 
 
-
 if __name__ == "__main__":
     #--------------------------------------------#
     #                 Prefetch                   #
@@ -140,11 +139,45 @@ if __name__ == "__main__":
 
 
     #--------------------------------------------#
+    #           Importazione dataset             #
+    #--------------------------------------------#
+
+    # Ricarico solamente gli esempi nello spazio dei parametri attuale
+    dfappo = pd.read_csv("Optimization/data/line2_opt1.csv")
+    df = dfappo[dfappo["params_filters"] > 12]
+
+    trials = []
+    for _, row in df.iterrows():
+        trial = FrozenTrial(
+            number=int(row["number"]),
+            trial_id=int(row["number"]),
+            state=TrialState.COMPLETE,
+            value=float(row["value"]),
+            params={
+                "filters": int(row["params_filters"]),
+                "dropout": float(row["params_dropout"]),
+            },
+            distributions={
+                "filters": optuna.distributions.IntDistribution(12, 20),
+                "dropout": optuna.distributions.FloatDistribution(0.1, 0.3),
+            },
+            user_attrs={},
+            system_attrs={},
+            intermediate_values={},
+            datetime_start=pd.to_datetime(row["datetime_start"]),
+            datetime_complete=pd.to_datetime(row["datetime_complete"]),
+        )
+        trials.append(trial)
+
+
+
+    #--------------------------------------------#
     #            Iper-ottimizzazione             #
     #--------------------------------------------#
-    sampler = RandomSampler(seed=0)
+    sampler = TPESampler(seed=1, n_startup_trials=0, multivariate=True)
     study = optuna.create_study(direction="maximize", sampler=sampler)
-    study.optimize(objective, n_trials=20)
+    study.add_trials(trials)
+    study.optimize(objective, n_trials=15)
 
     df = study.trials_dataframe()
-    df.to_csv("line2_opt1.csv", index=False)
+    df.to_csv("line2_opt2.csv", index=False)
