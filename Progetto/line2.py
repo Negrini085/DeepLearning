@@ -7,6 +7,8 @@ from tensorflow.keras.callbacks import EarlyStopping, ReduceLROnPlateau
 from tensorflow.keras.layers import RandomRotation, RandomTranslation, RandomZoom, RandomContrast
 from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten, Dropout, Rescaling, BatchNormalization, Activation
 
+nLay = 19
+drR = 0.13444894387463033
 
 def buildMod(imW, imH, numcl):
     model = tf.keras.models.Sequential()
@@ -20,25 +22,26 @@ def buildMod(imW, imH, numcl):
     model.add(RandomContrast(0.1))
 
     # Primo blocco convoluzionale
-    model.add(Conv2D(16, 3, padding="same", activation="relu"))
+    model.add(Conv2D(nLay, 3, padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Secondo blocco convoluzionale
-    model.add(Conv2D(32, 3, padding="same", activation="relu"))
+    model.add(Conv2D(2*nLay, 3, padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Terzo blocco convoluzionale
-    model.add(Conv2D(64, 3, padding="same", activation="relu"))
+    model.add(Conv2D(4*nLay, 3, padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Quarto blocco convoluzionale
-    model.add(Conv2D(128, 3, padding="same", activation="relu"))
+    model.add(Conv2D(8*nLay, 3, padding="same", activation="relu"))
+    model.add(Dropout(drR))
     model.add(MaxPooling2D())
 
     # Parte di classificazione
     model.add(Flatten())
     model.add(Dense(128, activation="relu"))
-    model.add(Dropout(0.3))
+    model.add(Dropout(2*drR))
     model.add(Dense(numcl, activation = "softmax"))
 
     return model
@@ -108,6 +111,6 @@ if __name__ == "__main__":
     #--------------------------------------------#
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/line2_v2_histo.csv", index=False)
+    df.to_csv("Modelli/training/line2_opt_histo.csv", index=False)
 
-    model.save("Modelli/line2_v2.keras")
+    model.save("Modelli/line2_opt.keras")
