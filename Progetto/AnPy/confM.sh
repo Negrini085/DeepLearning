@@ -1,7 +1,7 @@
 #!/bin/bash
 
-modG=("line3_v2.npy")      	# Nome del file di output previsioni
-titM=("line3_v2")	               		# Nome output matrice di confusione
+modG=("try1W.npy")      	# Nome del file di output previsioni
+titM=("try1W")	               		# Nome output matrice di confusione
 
 #-----------------------------------------------------------------------#
 #       Ciclo per modificare parametri esecuzione script confM.py       #
