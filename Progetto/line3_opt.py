@@ -59,8 +59,8 @@ testDat = tf.keras.utils.image_dataset_from_directory(
 def buildMod(trial):
 
     # Scelgo numero filtri e dropout
-    nFil = trial.suggest_int("filters", 12, 20, step=1)
-    drR = trial.suggest_float("dropout", 0.05, 0.12)
+    nFil = 16 #trial.suggest_int("filters", 12, 20, step=1)
+    drR = 0.1 #trial.suggest_float("dropout", 0.05, 0.12)
 
     # Parte di input
     model = tf.keras.models.Sequential()
@@ -143,9 +143,9 @@ if __name__ == "__main__":
     #--------------------------------------------#
     #            Iper-ottimizzazione             #
     #--------------------------------------------#
-    sampler = TPESampler(seed=1, n_startup_trials=5, multivariate=True)
+    sampler = TPESampler(seed=1, n_startup_trials=0, multivariate=True)
     study = optuna.create_study(direction="maximize", sampler=sampler)
-    study.optimize(objective, n_trials=10)
+    study.optimize(objective, n_trials=1)
 
     df = study.trials_dataframe()
-    df.to_csv("line3_opt.csv", index=False)
+    df.to_csv("line3_1_opt.csv", index=False)
