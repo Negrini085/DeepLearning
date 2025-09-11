@@ -9,6 +9,11 @@ from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten,
 
 
 def buildMod(imW, imH, numcl):
+
+    # Specifiche modello
+    nL = 12
+    dR = 0.07116328008422879
+
     model = tf.keras.models.Sequential()
     model.add(Input(shape=(imW, imH, 1)))
     model.add(Rescaling(1/255.))
@@ -20,30 +25,30 @@ def buildMod(imW, imH, numcl):
     model.add(RandomContrast(0.1))
 
     # Primo blocco convoluzionale
-    model.add(Conv2D(16, 3, padding="same", activation = "relu"))
+    model.add(Conv2D(nL, 3, padding="same", activation = "relu"))
     model.add(MaxPooling2D())
 
     # Secondo blocco convoluzionale
-    model.add(Conv2D(32, 3, padding="same", activation = "relu"))
-    model.add(Dropout(0.1))
+    model.add(Conv2D(2*nL, 3, padding="same", activation = "relu"))
+    model.add(Dropout(dR))
     model.add(MaxPooling2D())
 
     # Terzo blocco convoluzionale
-    model.add(Conv2D(64, 3, padding="same", activation = "relu"))
-    model.add(Conv2D(64, 3, padding="same", activation = "relu"))
-    model.add(Dropout(0.2))
+    model.add(Conv2D(4*nL, 3, padding="same", activation = "relu"))
+    model.add(Conv2D(4*nL, 3, padding="same", activation = "relu"))
+    model.add(Dropout(2*dR))
     model.add(MaxPooling2D())
 
     # Quarto blocco convoluzionale
-    model.add(Conv2D(128, 3, padding="same", activation = "relu"))
-    model.add(Conv2D(128, 3, padding="same", activation = "relu"))
-    model.add(Dropout(0.3))
+    model.add(Conv2D(8*nL, 3, padding="same", activation = "relu"))
+    model.add(Conv2D(8*nL, 3, padding="same", activation = "relu"))
+    model.add(Dropout(3*dR))
     model.add(MaxPooling2D())
 
     # Parte di classificazione
     model.add(Flatten())
     model.add(Dense(128, activation="relu"))
-    model.add(Dropout(0.4))
+    model.add(Dropout(4*dR))
     model.add(Dense(numcl, activation = "softmax"))
 
     return model
@@ -114,6 +119,6 @@ if __name__ == "__main__":
 
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/line3_v2_histo.csv", index=False)
+    df.to_csv("Modelli/training/line3_opt1_histo.csv", index=False)
 
-    model.save("Modelli/line3_v2.keras")
+    model.save("Modelli/line3_opt1.keras")
