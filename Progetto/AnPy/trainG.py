@@ -8,7 +8,7 @@ df = pd.read_csv("../Modelli/training/" + nomeF)
 l = len(df['loss'])+1
 
 # Loss
-fig, ax = plt.subplots(1, 2, figsize = (12, 7))
+fig, ax = plt.subplots(2, 1, figsize = (8, 12))
 ax[0].plot(np.arange(1, l), df['loss'], color = 'darkblue', label = 'Training')
 ax[0].plot(np.arange(1, l), df['val_loss'], color = 'darkred', label = 'Validation')
 ax[0].set_ylabel("Loss", fontsize = 20)

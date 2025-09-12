@@ -1,7 +1,7 @@
 #!/bin/bash
 
-modN=("try1W.keras")      	             # Nome del file di input modello
-modG=("try1W.npy")      	                     # Nome del file di output previsioni
+modN=("new_L1.keras")      	             # Nome del file di input modello
+modG=("new_L1.npy")      	                     # Nome del file di output previsioni
 
 #-----------------------------------------------------------------------#
 #       Ciclo per modificare parametri esecuzione script guess.py       #

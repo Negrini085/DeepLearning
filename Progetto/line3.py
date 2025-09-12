@@ -11,8 +11,8 @@ from tensorflow.keras.layers import Dense, Conv2D, Input, MaxPooling2D, Flatten,
 def buildMod(imW, imH, numcl):
 
     # Specifiche modello
-    nL = 12
-    dR = 0.07116328008422879
+    nL = 19
+    dR = 0.05766
 
     model = tf.keras.models.Sequential()
     model.add(Input(shape=(imW, imH, 1)))
@@ -119,6 +119,6 @@ if __name__ == "__main__":
 
     hist = histo.history
     df = pd.DataFrame(hist)
-    df.to_csv("Modelli/training/line3_opt1_histo.csv", index=False)
+    df.to_csv("Modelli/training/line3_opt2_histo.csv", index=False)
 
-    model.save("Modelli/line3_opt1.keras")
+    model.save("Modelli/line3_opt2.keras")
