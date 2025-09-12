@@ -83,7 +83,7 @@ if __name__ == "__main__":
     #--------------------------------------------#
     #              Build & Training              #
     #--------------------------------------------#
-    model = buildMod(48, 48, 7)
+    model = buildMod(48, 48, 7 )
     optimizer = tf.keras.optimizers.Adam(learning_rate=1e-3)
     model.compile(optimizer=optimizer, loss= "categorical_crossentropy", metrics=["accuracy"])
     model.summary()
