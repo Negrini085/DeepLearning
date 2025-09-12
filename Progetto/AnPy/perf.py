@@ -9,7 +9,7 @@ from sklearn.metrics import classification_report
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 
-model = load_model("../Modelli/line2_opt.keras")  
+model = load_model("../Modelli/line3_opt2.keras")  
 datagen = ImageDataGenerator()
 valDat = datagen.flow_from_directory(
     "../Dataset/test",
@@ -23,10 +23,10 @@ print("Modello e dataset caricati")
 
 # Importo true labels e predizioni
 yTr = np.load("../Modelli/guess/trueG.npy")
-yPr = np.argmax(np.load("../Modelli/guess/line2_opt.npy"), axis = 1)
+yPr = np.argmax(np.load("../Modelli/guess/line3_opt2.npy"), axis = 1)
 cls = ['Angry', 'Disgust', 'Fear', 'Happy', 'Sad', 'Surprise', 'Neutral']
 
 # Creo dataframe
 appo = classification_report(yTr, yPr, target_names=cls, output_dict=True)
 df = pd.DataFrame(appo).transpose()
-df.to_csv("perf_line2.csv", float_format="%.4f")
+df.to_csv("perf_line3.csv", float_format="%.4f")
