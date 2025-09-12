@@ -89,7 +89,9 @@ if __name__ == "__main__":
     #-------------------------------------------------#
     #              Stampo feature maps                #
     #-------------------------------------------------#
-    featureM(act[0], 1, "feaM_line2_lay1.png")
-    featureM(act[1], 2, "feaM_line2_lay2.png")
-    featureM(act[2], 3, "feaM_line2_lay3.png")
-    featureM(act[3], 4, "feaM_line2_lay4.png")
+    featureM(act[0], 1, "feaM_line3_lay1.png")
+    featureM(act[1], 2, "feaM_line3_lay2.png")
+    featureM(act[2], 3, "feaM_line3_lay3.png")
+    featureM(act[3], 4, "feaM_line3_lay4.png")
+    featureM(act[4], 5, "feaM_line3_lay5.png")
+    featureM(act[5], 6, "feaM_line3_lay6.png")

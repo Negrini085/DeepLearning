@@ -36,7 +36,7 @@ for i, (im, l) in enumerate(trDat):
 print()
 img = np.concatenate(img, axis=0)
 lab = np.concatenate(lab, axis=0)
-model = load_model("../Modelli/loadable/line2_opt.keras")
+model = load_model("../Modelli/line3_opt.keras")
 print("Dataset e modello caricati")
 
 # Normalizzo
