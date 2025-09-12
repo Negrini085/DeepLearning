@@ -12,19 +12,23 @@ def buildMod(imW, imH, numcl):
     model.add(Rescaling(1/255.))
 
     # Primo blocco convoluzionale
-    model.add(Conv2D(16, 3, padding="same", activation="relu"))
+    model.add(Conv2D(16, 3, 
+                     padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Secondo blocco convoluzionale
-    model.add(Conv2D(32, 3, padding="same", activation="relu"))
+    model.add(Conv2D(32, 3, 
+                     padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Terzo blocco convoluzionale
-    model.add(Conv2D(64, 3, padding="same", activation="relu"))
+    model.add(Conv2D(64, 3, 
+                     padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Quarto blocco convoluzionale
-    model.add(Conv2D(128, 3, padding="same", activation="relu"))
+    model.add(Conv2D(128, 3, 
+                     padding="same", activation="relu"))
     model.add(MaxPooling2D())
 
     # Parte di classificazione
